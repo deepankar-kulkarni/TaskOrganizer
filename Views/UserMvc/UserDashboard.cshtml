@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TaskOrganizer.Models.Dashboard>
+
+@{
+    ViewBag.Title = "UserDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Dashboard</h3>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Assignee
+        </th>
+        <th>
+            Pending
+        </th>
+        <th>
+            On Hold
+        </th>
+        <th>
+            In Progress
+        </th>
+        <th>
+            Completed
+        </th>
+        <th>
+            Not Started
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Assignee)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Pending)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.OnHold)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.InProgress)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Completed)
+
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.NotStarted)
+    </td>
+</tr>
+}
+
+</table>

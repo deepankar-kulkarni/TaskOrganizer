@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ETOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TaskDetail">
+    <Key>
+      <PropertyRef Name="TaskId" />
+    </Key>
+    <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="TaskName" Type="String" MaxLength="1050" FixedLength="false" Unicode="true" />
+    <Property Name="Assignee" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DueDate" Type="DateTime" Precision="7" />
+    <Property Name="TaskDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="CompletedDate" Type="DateTime" Precision="7" />
+    <Property Name="CompletedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TaskCreationDate" Type="DateTime" Precision="7" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <Property Name="Stage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Priority" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TaskDetails1" Relationship="Self.FK_User_Task" FromRole="TaskDetails" ToRole="TaskDetails1" />
+    <NavigationProperty Name="TaskDetail1" Relationship="Self.FK_User_Task" FromRole="TaskDetails1" ToRole="TaskDetails" />
+  </EntityType>
+  <EntityType Name="TaskHistory">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="TaskId" Type="Int32" Nullable="false" />
+    <Property Name="Action" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="7" />
+  </EntityType>
+  <EntityType Name="UserDetail">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RecoveryQuestion" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="RecoveryAns" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="RecoveryEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserDetails1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails" ToRole="UserDetails1" />
+    <NavigationProperty Name="UserDetail1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails1" ToRole="UserDetails" />
+    <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserDetails_UserRole" FromRole="UserDetails" ToRole="UserRole" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserDetail" Relationship="Self.FK_UserDetails_UserRole" FromRole="UserRole" ToRole="UserDetails" />
+  </EntityType>
+  <Association Name="FK_User_Task">
+    <End Role="TaskDetails" Type="Self.TaskDetail" Multiplicity="1" />
+    <End Role="TaskDetails1" Type="Self.TaskDetail" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="TaskDetails">
+        <PropertyRef Name="TaskId" />
+      </Principal>
+      <Dependent Role="TaskDetails1">
+        <PropertyRef Name="TaskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetails_UserDetails">
+    <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
+    <End Role="UserDetails1" Type="Self.UserDetail" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetails">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserDetails1">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDetails_UserRole">
+    <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetails">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ETOEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TaskDetails" EntityType="Self.TaskDetail" />
+    <EntitySet Name="TaskHistories" EntityType="Self.TaskHistory" />
+    <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+    <AssociationSet Name="FK_User_Task" Association="Self.FK_User_Task">
+      <End Role="TaskDetails" EntitySet="TaskDetails" />
+      <End Role="TaskDetails1" EntitySet="TaskDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetails_UserDetails" Association="Self.FK_UserDetails_UserDetails">
+      <End Role="UserDetails" EntitySet="UserDetails" />
+      <End Role="UserDetails1" EntitySet="UserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDetails_UserRole" Association="Self.FK_UserDetails_UserRole">
+      <End Role="UserDetails" EntitySet="UserDetails" />
+      <End Role="UserRole" EntitySet="UserRoles" />
+    </AssociationSet>
+    <FunctionImport Name="StagewiseDataForDashboard">
+      <Parameter Name="p1" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetDashboardData" ReturnType="Collection(ETOModel.sp_GetDashboardData_Result)">
+      <Parameter Name="UserName" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="stagewise_data_for_dashboard_Result">
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="Pending" Nullable="true" />
+    <Property Type="Int32" Name="OnHold" Nullable="true" />
+    <Property Type="Int32" Name="InProgress" Nullable="true" />
+    <Property Type="Int32" Name="Completed" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="StagewiseDataForDashboard_Result">
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="Pending" Nullable="true" />
+    <Property Type="Int32" Name="OnHold" Nullable="true" />
+    <Property Type="Int32" Name="InProgress" Nullable="true" />
+    <Property Type="Int32" Name="Completed" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_GetDashboardData_Result">
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="Pending" Nullable="true" />
+    <Property Type="Int32" Name="OnHold" Nullable="true" />
+    <Property Type="Int32" Name="InProgress" Nullable="true" />
+    <Property Type="Int32" Name="Completed" Nullable="true" />
+    <Property Type="Int32" Name="NotStarted" Nullable="true" />
+  </ComplexType>
+</Schema>

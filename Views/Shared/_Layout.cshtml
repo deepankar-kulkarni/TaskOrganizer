@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Site.css")
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="
+     https://kit.fontawesome.com/a076d05399.js">
+
+    </script>
+</head>
+<body>
+    <div id="viewport">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <header>
+                <a href="#">My App</a>
+            </header>
+            <ul class="nav">
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a href="@Url.Action("AdminDashboard", "UserMvc")">
+                            <i class="fa fa-fw fa-home icon"></i>Home
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("UserDashboard", "UserMvc")">
+                            <i class="fa fa-fw fa-home icon"></i>Home
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a href="@Url.Action("GetUserWiseTask","UserMvc",new {username= User.Identity.Name})">
+                        <i class="far fa-check-circle icon"></i>My Tasks
+                    </a>
+                </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a href="@Url.Action("getAllTasks","UserMvc")">
+                            <i class="fas fa-list icon"></i>All Tasks
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Signup","Account")">
+                            <i class="fas fa-user-plus"></i>Create New User
+                        </a>
+
+                    </li>
+                }
+                <li>
+                    <a href="@Url.Action("Logout","Account")">
+                        <i class="fas fa-sign-out-alt"></i>Logout
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <!-- Content -->
+        <div id="content">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav navbar-right">
+                      
+                        <li><a href="@Url.Action("Dashboard","UserMvc")"><i class="far fa-user icon"></i>@User.Identity.Name</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

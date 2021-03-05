@@ -1,0 +1,101 @@
+﻿@model IEnumerable<TaskOrganizer.Models.Task>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Task";
+}
+
+<div class="header-outer">
+    <div class="left">
+        @*<label>My Tasks</label>*@
+    </div>
+    <div class="right">
+        <button class="btn btn-success add-task" onclick="location.href='@Url.Action("CreateTask", "UserMvc",Model)'"><i class="fas fa-plus"></i>New Task</button>
+    </div>
+</div>
+<br />
+<table class="table table-hover ">
+    <caption>Ongoing Tasks</caption>
+    <tr>
+        <th>
+            Task Name
+        </th>
+        <th>
+            Assignee
+        </th>
+        <th>
+            Stage
+        </th>
+        <th>
+            Due Date
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (!item.Status)
+        {
+            <tr onclick="location.href = '@(Url.Action("Edit", "UserMvc", new { id = item.TaskId }))'">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Assignee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate, "{0:dd-MM-yyyy}")
+                </td>
+            </tr>
+
+        }
+    }
+
+</table>
+
+<table class="table table-hover ">
+    <caption>Completed Tasks</caption>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TaskName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Assignee)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.Status)
+        {
+            <tr onclick="location.href = '@(Url.Action("Edit", "UserMvc", new { id = item.TaskId }))'">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Assignee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate, "{0:dd-MM-yyyy}")
+                </td>
+            </tr>
+
+        }
+    }
+
+</table>
