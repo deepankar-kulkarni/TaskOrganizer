@@ -114,6 +114,18 @@
     <FunctionImport Name="sp_GetDashboardData" ReturnType="Collection(ETOModel.sp_GetDashboardData_Result)">
       <Parameter Name="UserName" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="sp_GetFilteredData" ReturnType="Collection(ETOModel.sp_GetFilteredData_Result1)">
+      <Parameter Name="username" Mode="In" Type="String" />
+      <Parameter Name="stage" Mode="In" Type="String" />
+      <Parameter Name="priority" Mode="In" Type="Int32" />
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <EntitySet Name="CommentHistories" EntityType="ETOModel.CommentHistory" />
+    <FunctionImport Name="sp_GetPendingTaskForUser" ReturnType="Collection(ETOModel.sp_GetPendingTaskForUser_Result)">
+      <Parameter Name="Username" Mode="In" Type="String" />
+      <Parameter Name="TodaysDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="stagewise_data_for_dashboard_Result">
     <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
@@ -136,5 +148,43 @@
     <Property Type="Int32" Name="InProgress" Nullable="true" />
     <Property Type="Int32" Name="Completed" Nullable="true" />
     <Property Type="Int32" Name="NotStarted" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_GetFilteredData_Result">
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+    <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="DueDate" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_GetFilteredData1_Result">
+    <Property Type="Int32" Name="TaskId" Nullable="false" />
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+    <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="DueDate" Nullable="true" />
+    <Property Type="Boolean" Name="Status" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sp_GetFilteredData_Result1">
+    <Property Type="Int32" Name="TaskId" Nullable="false" />
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+    <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="DueDate" Nullable="true" />
+    <Property Type="Boolean" Name="Status" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="CommentHistory">
+    <Key>
+      <PropertyRef Name="CommentId" />
+    </Key>
+    <Property Name="CommentId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="TaskId" Type="Int32" Nullable="false" />
+    <Property Name="Commenter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+    <Property Name="Commented_On" Type="DateTime" Precision="7" />
+  </EntityType>
+  <ComplexType Name="sp_GetPendingTaskForUser_Result">
+    <Property Type="Int32" Name="TaskId" Nullable="false" />
+    <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+    <Property Type="String" Name="stage" Nullable="true" MaxLength="50" />
   </ComplexType>
 </Schema>

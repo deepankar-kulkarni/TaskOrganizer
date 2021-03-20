@@ -67,5 +67,38 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_GetFilteredData" FunctionName="ETOModel.Store.sp_GetFilteredData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ETOModel.sp_GetFilteredData_Result1">
+          <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+          <ScalarProperty Name="Assignee" ColumnName="Assignee" />
+          <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+          <ScalarProperty Name="Stage" ColumnName="Stage" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="CommentHistories">
+      <EntityTypeMapping TypeName="ETOModel.CommentHistory">
+        <MappingFragment StoreEntitySet="CommentHistory">
+          <ScalarProperty Name="Commented_On" ColumnName="Commented_On" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="Commenter" ColumnName="Commenter" />
+          <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_GetPendingTaskForUser" FunctionName="ETOModel.Store.sp_GetPendingTaskForUser">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ETOModel.sp_GetPendingTaskForUser_Result">
+          <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+          <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+          <ScalarProperty Name="stage" ColumnName="stage" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

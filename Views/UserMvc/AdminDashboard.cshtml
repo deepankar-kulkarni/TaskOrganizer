@@ -9,13 +9,19 @@
 @Styles.Render("~/Content/bootstrap.css")
 @Scripts.Render("~/bundles/modernizr")
 
-<h3>Dashboard</h3>
+<script src="~/Scripts/Dashboard.js"></script>
+<script src="~/Scripts/Chart.js"></script>
 
+<h3>Dashboard</h3>
+<div class="stage-chart">
+    <span>Total Tasks: <label id="totalTasks"></label></span>
+    <canvas id="stageCanvas" height="20" width="20"></canvas>
+</div>
 <div class="row">
     <div class="col-12 col-lg-8 cal-xxl-9 d-flex">
         <div class="card flex-fill w-100">
             <div class="card-header">
-                <h5 class="card-title">Latest Tasks</h5>
+                <h5 class="card-title">Task Details</h5>
             </div>
             <table class="table table-hover my-0">
                 <thead>

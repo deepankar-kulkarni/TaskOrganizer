@@ -46,10 +46,11 @@
 {
     @Html.AntiForgeryToken()
     
-<div class="form-horizontal">
+<div class="form-horizontal" id="wrap">
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.TaskId)
+    <div id="main">
 
     <div class="form-group">
         @Html.LabelFor(model => model.Assignee, "Assignee", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -92,30 +93,71 @@
         @Html.LabelFor(model => model.Stage, "Stage", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div>
-                @Html.DropDownList("Stage", statusList, new { @class = "form-control" })
+                @Html.DropDownList("Stage", statusList, new { @class = "form-control col-md-6" })
                 @Html.ValidationMessageFor(model => model.Stage, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button class="btn btn-primary" type="submit" onclick="location.href='@Url.Action("Edit", "UserMvc",Model)'">Save</button>
-            <button class="btn btn-danger" type="submit" onclick="location.href='@Url.Action("Delete", "UserMvc")'">Delete</button>
-
-        </div>
-    </div>
-    <div>
+    <div id="history">
         <table>
             @foreach (var item in Model.taskHistory)
             {
                 <tr>
-                    <td class="text-info">@Html.DisplayFor(modelItem => item)</td>
+                    <td class="history-text">@Html.DisplayFor(modelItem => item)</td>
                 </tr>
             }
         </table>
-       
+        <hr />
+    </div>
+    <div id="comment">
+        <table>
+            @if (Model.commentHistory != null)
+            {
+                foreach (var item in Model.commentHistory)
+                {
+                    <tr>
+                        <td>
+                            <span class="comment-label"><strong>@Html.DisplayFor(modelItem => item.Commenter) </strong></span><span class="commented-on">@Html.DisplayFor(modelItem => item.Commented_On)</span>
+                            <p class="comment-text">@Html.DisplayFor(modelItem => item.Comment)</p>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+        <hr />
+    </div>
+</div>
+    
+</div>
+<div class="footer">
+    <div class="form-group">
+        @Html.LabelFor(model => model.comment, "Comment", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <textarea value="" id = "commentText" name="comment" class="form-control" onkeyup="EnableDisable(this)"></textarea>
+            @Html.ValidationMessageFor(model => model.TaskDescription, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-offset-2 col-md-12">
+            <button class="btn btn-primary button" id="btnSave" type="submit" disabled="disabled" onclick="location.href='@Url.Action("Edit", "UserMvc",Model)'">Save</button>
+            <button class="btn btn-danger button" id="btnDelete" type="submit" disabled="disabled" onclick="location.href='@Url.Action("Delete", "UserMvc")'">Delete</button>
+        </div>
     </div>
 </div>
 }
-
+<script>
+    function EnableDisable(commentText) {
+        //Reference the Button.
+        var btnSave = document.getElementById("btnSave");
+        var btnDelete = document.getElementById("btnDelete");
+        //Verify the TextBox value.
+        if (commentText.value.trim() != "") {
+            //Enable the TextBox when TextBox has value.
+            btnSave.disabled = false;
+            btnDelete.disabled = false;
+        } else {
+            //Disable the TextBox when TextBox is empty.
+            btnSave.disabled = true;
+            btnDelete.disabled = true;
+        }
+    };
+</script>

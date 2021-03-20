@@ -31,6 +31,7 @@ namespace TaskOrganizer.database
         public virtual DbSet<TaskHistory> TaskHistories { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<CommentHistory> CommentHistories { get; set; }
     
         public virtual int StagewiseDataForDashboard(Nullable<int> p1)
         {
@@ -48,6 +49,44 @@ namespace TaskOrganizer.database
                 new ObjectParameter("UserName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetDashboardData_Result>("sp_GetDashboardData", userNameParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetFilteredData_Result1> sp_GetFilteredData(string username, string stage, Nullable<int> priority, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var stageParameter = stage != null ?
+                new ObjectParameter("stage", stage) :
+                new ObjectParameter("stage", typeof(string));
+    
+            var priorityParameter = priority.HasValue ?
+                new ObjectParameter("priority", priority) :
+                new ObjectParameter("priority", typeof(int));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetFilteredData_Result1>("sp_GetFilteredData", usernameParameter, stageParameter, priorityParameter, fromDateParameter, toDateParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetPendingTaskForUser_Result> sp_GetPendingTaskForUser(string username, Nullable<System.DateTime> todaysDate)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var todaysDateParameter = todaysDate.HasValue ?
+                new ObjectParameter("TodaysDate", todaysDate) :
+                new ObjectParameter("TodaysDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetPendingTaskForUser_Result>("sp_GetPendingTaskForUser", usernameParameter, todaysDateParameter);
         }
     }
 }

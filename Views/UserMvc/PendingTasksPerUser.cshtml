@@ -1,0 +1,35 @@
+﻿@model IEnumerable<TaskOrganizer.Models.Task>
+
+@{
+    ViewBag.Title = "PendingTasksPerUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Today's Tasks</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TaskName)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.Stage)
+        </th>
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.TaskName)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Stage)
+        </td>
+        
+    </tr>
+}
+
+</table>

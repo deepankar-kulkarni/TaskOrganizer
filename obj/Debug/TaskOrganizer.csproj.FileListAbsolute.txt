@@ -50,6 +50,16 @@ D:\Projects\TaskOrganizer\bin\roslyn\vbc.exe.config
 D:\Projects\TaskOrganizer\bin\roslyn\vbc.rsp
 D:\Projects\TaskOrganizer\bin\roslyn\VBCSCompiler.exe
 D:\Projects\TaskOrganizer\bin\roslyn\VBCSCompiler.exe.config
+D:\Projects\TaskOrganizer\bin\BouncyCastle.Crypto.dll
+D:\Projects\TaskOrganizer\bin\Common.Logging.Core.dll
+D:\Projects\TaskOrganizer\bin\Common.Logging.dll
+D:\Projects\TaskOrganizer\bin\iTextSharp.LGPLv2.Core.dll
+D:\Projects\TaskOrganizer\bin\BouncyCastle.Crypto.xml
+D:\Projects\TaskOrganizer\bin\Common.Logging.pdb
+D:\Projects\TaskOrganizer\bin\Common.Logging.xml
+D:\Projects\TaskOrganizer\bin\Common.Logging.Core.pdb
+D:\Projects\TaskOrganizer\bin\Common.Logging.Core.xml
+D:\Projects\TaskOrganizer\bin\iTextSharp.LGPLv2.Core.xml
 D:\Projects\TaskOrganizer\obj\Debug\TaskOrganizer.csproj.CoreCompileInputs.cache
 D:\Projects\TaskOrganizer\obj\Debug\TaskOrganizer.csproj.CopyComplete
 D:\Projects\TaskOrganizer\obj\Debug\TaskOrganizer.dll

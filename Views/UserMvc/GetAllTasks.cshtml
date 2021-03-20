@@ -5,97 +5,115 @@
     ViewBag.Title = "Task";
 }
 
-<div class="header-outer">
-    <div class="left">
-        @*<label>My Tasks</label>*@
+@using (Html.BeginForm("ExportPdf", "UserMvc", FormMethod.Post))
+{
+    <div class="flex">
+        <div class="item" id="assignee-div">
+            <h5>Assignee</h5>
+            <span>
+                @Html.DropDownList("Assignee", (IEnumerable<SelectListItem>)ViewBag.AssigneeList, new { @class = "form-control", id = "assignee" })
+            </span>
+        </div>
+        <div class="item i1">
+            <h5>Stage</h5>
+            <span class="col-sm-7">
+                <select name="stage" id="stage" class="form-control">
+                    <option value="-1" selected>All</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Not Started">Not Started</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </span>
+            <h5>Priority</h5>
+            <span class="col-sm-6">
+                <select name="Priority" id="priority" class="form-control">
+                    <option value="-1" selected>All</option>
+                    <option value="0">Low</option>
+                    <option value="1">Medium</option>
+                    <option value="2">High</option>
+                </select>
+            </span>
+        </div>
+        <div class="item i3">
+            <h5>From Date</h5>
+            <span class="col-sm-6">
+                <input name="FromDate" type="date" value="" id="fromDate" class="form-control" />
+            </span>
+            <h5>To Date</h5>
+            <span class="col-sm-6">
+                <input name="ToDate" type="date" value="" id="toDate" class="form-control" />
+            </span>
+            <span>
+                <input type="button" id="filter" value="Filter" class="form-control btn btn-primary filterBtn" onclick="filterData()" />
+            </span>
+        </div>
+        <div class="item i4">
+
+            @*<span>
+                <a href="#" class="btn btn-primary" id="ExportPdf">Export Report</a>
+            </span>*@
+            <span>
+                    <input type="submit" id="export" value="Export" class="form-control btn btn-success filterBtn"/>
+                </span>
+        </div>
+
     </div>
-    <div class="right">
-        <button class="btn btn-success add-task" onclick="location.href='@Url.Action("CreateTask", "UserMvc",Model)'"><i class="fas fa-plus"></i>New Task</button>
-    </div>
-</div>
-<br />
-<table class="table table-hover ">
-    <caption>Ongoing Tasks</caption>
-    <tr>
-        <th>
-            Task Name
-        </th>
-        <th>
-            Assignee
-        </th>
-        <th>
-            Stage
-        </th>
-        <th>
-            Due Date
-        </th>
-        <th></th>
-    </tr>
+    <br />
+    <table class="table table-hover " id="OnGoingTasks">
+        <caption>All Tasks</caption>
+        <tr>
+            <th>
+                Task Name
+            </th>
+            <th>
+                Assignee
+            </th>
+            <th>
+                Stage
+            </th>
+            <th>
+                Due Date
+            </th>
+            <th></th>
+        </tr>
+    </table>
+}
 
-    @foreach (var item in Model)
-    {
-        if (!item.Status)
-        {
-            <tr onclick="location.href = '@(Url.Action("Edit", "UserMvc", new { id = item.TaskId }))'">
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Assignee)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stage)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DueDate, "{0:dd-MM-yyyy}")
-                </td>
-            </tr>
+<script>
+    var filteredData = [];
+    function filterData() {
+        var stage = $("#stage").val();
+        var priority = $("#priority").val();
+        var fromDate = $("#fromDate").val();
+        var toDate = $("#toDate").val();
+        var username = $("#assignee").val();
+        $.ajax({
+            type: 'POST',
+            url: 'GetFilteredData',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify( {username:username, stage: stage, priority: priority, fromDate: fromDate, toDate: toDate }),
+            success: function (fResult) {
+                filteredData = fResult.result;
+                $.each(filteredData, function (i, item) {
+                    var taskId = item.TaskId;
+                    var dt = item.DueDate;
+                   // var DueDate = Date(parseInt(dt.replace('/Date(', '')));
+                    var num = dt.match(/\d+/g);
+                    var date = new Date(parseFloat(num)); //converting to date
+                    var DueDate = date.getMonth() + 1 + "-" + date.getDate() + '-' + date.getFullYear();
 
-        }
+                    var $tr = $('<tr onclick="location.href = \'/UserMvc/Edit/' + taskId + '\'">').append(
+
+                        $('<td>').text(item.TaskName),
+                        $('<td>').text(item.Assignee),
+                        $('<td>').text(item.Stage),
+                        $('<td>').text(DueDate)
+                    ).appendTo('#OnGoingTasks');
+                })
+            }
+        });
     }
-
-</table>
-
-<table class="table table-hover ">
-    <caption>Completed Tasks</caption>
-    <tr>
-        <th>
-            Task Name
-        </th>
-        <th>
-            Assignee
-        </th>
-        <th>
-            Stage
-        </th>
-        <th>
-            Due Date
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        if (item.Status)
-        {
-            <tr onclick="location.href = '@(Url.Action("Edit", "UserMvc", new { id = item.TaskId }))'">
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Assignee)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stage)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DueDate, "{0:dd-MM-yyyy}")
-                </td>
-            </tr>
-
-        }
-    }
-
-</table>
+</script>

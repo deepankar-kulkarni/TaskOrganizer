@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ETOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CommentHistory">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="Commenter" Type="nvarchar" MaxLength="150" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="1500" />
+          <Property Name="Commented_On" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="TaskDetails">
           <Key>
             <PropertyRef Name="TaskId" />
@@ -93,10 +104,22 @@
         <Function Name="sp_GetDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserName" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_GetFilteredData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="stage" Type="nvarchar" Mode="In" />
+          <Parameter Name="priority" Type="int" Mode="In" />
+          <Parameter Name="fromDate" Type="datetime2" Mode="In" />
+          <Parameter Name="toDate" Type="datetime2" Mode="In" />
+        </Function>
+        <Function Name="sp_GetPendingTaskForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="nvarchar" Mode="In" />
+          <Parameter Name="TodaysDate" Type="datetime2" Mode="In" />
+        </Function>
         <Function Name="StagewiseDataForDashboard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="p1" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ETOModelStoreContainer">
+          <EntitySet Name="CommentHistory" EntityType="Self.CommentHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskDetails" EntityType="Self.TaskDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskHistory" EntityType="Self.TaskHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
@@ -232,6 +255,18 @@
           <FunctionImport Name="sp_GetDashboardData" ReturnType="Collection(ETOModel.sp_GetDashboardData_Result)">
           <Parameter Name="UserName" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_GetFilteredData" ReturnType="Collection(ETOModel.sp_GetFilteredData_Result1)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="stage" Mode="In" Type="String" />
+            <Parameter Name="priority" Mode="In" Type="Int32" />
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="CommentHistories" EntityType="ETOModel.CommentHistory" />
+          <FunctionImport Name="sp_GetPendingTaskForUser" ReturnType="Collection(ETOModel.sp_GetPendingTaskForUser_Result)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="TodaysDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="stagewise_data_for_dashboard_Result">
           <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
@@ -254,6 +289,44 @@
           <Property Type="Int32" Name="InProgress" Nullable="true" />
           <Property Type="Int32" Name="Completed" Nullable="true" />
           <Property Type="Int32" Name="NotStarted" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_GetFilteredData_Result">
+          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="DueDate" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_GetFilteredData1_Result">
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="DueDate" Nullable="true" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_GetFilteredData_Result1">
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="DueDate" Nullable="true" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="CommentHistory">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="Commenter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Comment" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+          <Property Name="Commented_On" Type="DateTime" Precision="7" />
+        </EntityType>
+        <ComplexType Name="sp_GetPendingTaskForUser_Result">
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+          <Property Type="String" Name="stage" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -324,6 +397,39 @@
                 <ScalarProperty Name="InProgress" ColumnName="InProgress" />
                 <ScalarProperty Name="Completed" ColumnName="Completed" />
                 <ScalarProperty Name="NotStarted" ColumnName="NotStarted" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetFilteredData" FunctionName="ETOModel.Store.sp_GetFilteredData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.sp_GetFilteredData_Result1">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Assignee" ColumnName="Assignee" />
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CommentHistories">
+            <EntityTypeMapping TypeName="ETOModel.CommentHistory">
+              <MappingFragment StoreEntitySet="CommentHistory">
+                <ScalarProperty Name="Commented_On" ColumnName="Commented_On" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Commenter" ColumnName="Commenter" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetPendingTaskForUser" FunctionName="ETOModel.Store.sp_GetPendingTaskForUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.sp_GetPendingTaskForUser_Result">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="stage" ColumnName="stage" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

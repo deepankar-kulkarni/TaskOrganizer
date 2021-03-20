@@ -12,6 +12,7 @@
         <AssociationConnector Association="ETOModel.FK_User_Task" ManuallyRouted="false" />
         <AssociationConnector Association="ETOModel.FK_UserDetails_UserDetails" ManuallyRouted="false" />
         <AssociationConnector Association="ETOModel.FK_UserDetails_UserRole" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ETOModel.CommentHistory" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -32,7 +32,7 @@ namespace TaskOrganizer.Controllers
                     FormsAuthentication.SetAuthCookie(user.UserName, false);
                     if(user.UserName == "Admin")
                     {
-                        return RedirectToAction("AdminDashboard", "UserMvc");
+                       return RedirectToAction("AdminDashboard", "UserMvc");
                     }
                     return RedirectToAction("UserDashboard", "UserMvc",User.Identity.Name);
                 }
@@ -45,7 +45,7 @@ namespace TaskOrganizer.Controllers
 
         public ActionResult Signup()
         {
-            return View();
+            return View("SignUp");
         }
 
         [HttpPost]

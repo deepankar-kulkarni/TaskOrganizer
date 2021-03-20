@@ -16,5 +16,6 @@ namespace TaskOrganizer.Models
         public string RecoveryEmail { get; set; }
         public string Role { get; set; }
         public string Mobile { get; set; }
+        public string javascriptToCall { get; set; }
     }
 }

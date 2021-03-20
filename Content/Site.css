@@ -127,6 +127,87 @@ body {
     position: absolute;
     background: #e6e6e6;
     transition: 0.10s;
-    top: 20%;
+    margin-top: 10%;
+}
+.stage-chart {
+    width: 300px;
+    height: 300px;
+}
+.flex {
+    display: flex;
 }
 
+.item {
+    min-height: 50px;
+    display: flex;
+    margin:10px;
+    justify-content: center;
+    align-items: center;
+}
+#assignee-div h5 {
+    padding-right: 10px;
+    padding-left: 0;
+}
+.i3{
+     width: 650px;
+}
+
+.assignee{
+    width:100px;
+    padding:5px;
+}
+.filterBtn {
+    margin-top: 6px;
+}
+#wrap {
+    width:90%;
+    margin:auto;
+    overflow:visible;
+}
+#main {
+    width: 90%;
+    height: 400px;
+    overflow-y: auto;
+    margin: auto;
+    padding: 0 10% 0 22%; /* this needs to be bigger than footer height*/
+}
+.footer {
+    position: fixed;
+    margin-top: -50px; /*negative value of footer height */
+    height: 80px;
+    clear: both;
+    padding: 8% 10% 0 22%;
+}
+.button{
+    margin:20px;
+    width:80px;
+}
+
+#comment,#history{
+    padding-left:18%;
+}
+/*#comment {
+    overflow-y: auto;
+    height:100px;
+}*/
+.history-text {
+    font-size: 10px;
+    font-family: Helvetica, sans-serif;
+}
+.comment-text {
+    font-size: 10px;
+    font-family: Helvetica, sans-serif;
+}
+.comment-label {
+    font-size: 11px;
+}
+.commented-on{
+    font-size:10px;
+    
+}
+
+.main-div {
+    width: 80%;
+    margin: auto;
+    padding: 8% 10% 0 22%;
+}
