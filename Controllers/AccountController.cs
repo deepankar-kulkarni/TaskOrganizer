@@ -26,15 +26,16 @@ namespace TaskOrganizer.Controllers
             using (ETOEntities eto = new ETOEntities())
             {
 
-                bool isValid = eto.UserDetails.Any(x => x.UserName == user.UserName && x.Password == user.Password);
-                if (isValid)
+               var id = eto.sp_Login(user.LoginId, user.Password).FirstOrDefault();
+               int userid = Convert.ToInt32(id);
+                if (userid != 0)
                 {
-                    FormsAuthentication.SetAuthCookie(user.UserName, false);
-                    if(user.UserName == "Admin")
+                    FormsAuthentication.SetAuthCookie(user.LoginId, false);
+                    if(user.LoginId == "Admin")
                     {
                        return RedirectToAction("AdminDashboard", "UserMvc");
                     }
-                    return RedirectToAction("UserDashboard", "UserMvc",User.Identity.Name);
+                    return RedirectToAction("UserDashboard", "UserMvc",user.LoginId);
                 }
 
                 ViewBag.ErrorMessage = "Invalid Username or Password";
@@ -58,6 +59,7 @@ namespace TaskOrganizer.Controllers
                 ud.Password = user.Password;
                 ud.Email = user.Email;
                 ud.Mobile = user.Mobile;
+                ud.Department = user.Department;
                 using (ETOEntities eto = new ETOEntities())
                 {
                     eto.UserDetails.Add(ud);

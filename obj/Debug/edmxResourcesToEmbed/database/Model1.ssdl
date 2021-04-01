@@ -10,6 +10,36 @@
     <Property Name="Commenter" Type="nvarchar" MaxLength="150" />
     <Property Name="Comment" Type="nvarchar" MaxLength="1500" />
     <Property Name="Commented_On" Type="datetime2" Precision="7" />
+    <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_On" Type="datetime2" Precision="7" />
+    <Property Name="Modified_On" Type="datetime2" Precision="7" />
+  </EntityType>
+  <EntityType Name="CompanyDetails">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+    </Key>
+    <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="150" />
+    <Property Name="Manager" Type="nvarchar" MaxLength="150" />
+    <Property Name="Address" Type="nvarchar" MaxLength="500" />
+    <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_On" Type="datetime2" Precision="7" />
+    <Property Name="Modified_On" Type="datetime2" Precision="7" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="DeptId" />
+    </Key>
+    <Property Name="DeptId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerId" Type="int" />
+    <Property Name="ManagerName" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_On" Type="datetime2" Precision="7" />
+    <Property Name="Modified_by" Type="nvarchar" MaxLength="150" />
+    <Property Name="Modified_on" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="TaskDetails">
     <Key>
@@ -27,6 +57,10 @@
     <Property Name="Status" Type="bit" Nullable="false" />
     <Property Name="Stage" Type="nvarchar" MaxLength="50" />
     <Property Name="Priority" Type="int" Nullable="false" />
+    <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_On" Type="datetime2" Precision="7" />
+    <Property Name="Modified_On" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="TaskHistory">
     <Key>
@@ -37,6 +71,10 @@
     <Property Name="TaskId" Type="int" Nullable="false" />
     <Property Name="Action" Type="nvarchar" MaxLength="500" />
     <Property Name="Date" Type="datetime2" Precision="7" />
+    <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_On" Type="datetime2" Precision="7" />
+    <Property Name="Modified_On" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="UserDetails">
     <Key>
@@ -44,13 +82,19 @@
     </Key>
     <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+    <Property Name="LoginId" Type="nvarchar" MaxLength="100" />
     <Property Name="Password" Type="nvarchar" MaxLength="50" />
     <Property Name="Role" Type="nvarchar" MaxLength="50" />
     <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Department" Type="nvarchar" MaxLength="100" />
     <Property Name="RecoveryQuestion" Type="nvarchar" MaxLength="150" />
     <Property Name="RecoveryAns" Type="nvarchar" MaxLength="150" />
     <Property Name="RecoveryEmail" Type="nvarchar" MaxLength="50" />
     <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_On" Type="datetime2" Precision="7" />
+    <Property Name="Modified_On" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="UserRole">
     <Key>
@@ -59,31 +103,12 @@
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="Role" Type="nvarchar" MaxLength="50" />
+    <Property Name="Username" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+    <Property Name="Modified_by" Type="nvarchar" MaxLength="150" />
+    <Property Name="Created_On" Type="datetime2" Precision="7" />
+    <Property Name="Modified_On" Type="datetime2" Precision="7" />
   </EntityType>
-  <Association Name="FK_User_Task">
-    <End Role="TaskDetails" Type="Self.TaskDetails" Multiplicity="1" />
-    <End Role="TaskDetails1" Type="Self.TaskDetails" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="TaskDetails">
-        <PropertyRef Name="TaskId" />
-      </Principal>
-      <Dependent Role="TaskDetails1">
-        <PropertyRef Name="TaskId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_UserDetails_UserDetails">
-    <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
-    <End Role="UserDetails1" Type="Self.UserDetails" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="UserDetails">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="UserDetails1">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_UserDetails_UserRole">
     <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
     <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -96,6 +121,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="sp_GetAllDepartmentDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_GetAllUsersDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_GetComment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Taskid" Type="int" Mode="In" />
+  </Function>
   <Function Name="sp_GetDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="UserName" Type="nvarchar" Mode="In" />
   </Function>
@@ -106,27 +136,41 @@
     <Parameter Name="fromDate" Type="datetime2" Mode="In" />
     <Parameter Name="toDate" Type="datetime2" Mode="In" />
   </Function>
+  <Function Name="sp_GetFilteredData_new" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="username" Type="nvarchar" Mode="In" />
+    <Parameter Name="stage" Type="nvarchar" Mode="In" />
+    <Parameter Name="priority" Type="int" Mode="In" />
+    <Parameter Name="fromDate" Type="datetime2" Mode="In" />
+    <Parameter Name="toDate" Type="datetime2" Mode="In" />
+  </Function>
   <Function Name="sp_GetPendingTaskForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Username" Type="nvarchar" Mode="In" />
     <Parameter Name="TodaysDate" Type="datetime2" Mode="In" />
+  </Function>
+  <Function Name="sp_GetSpecificTaskDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Taskid" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_GetTaskHstory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Taskid" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_GetUserwiseTaskDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Username" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LoginId" Type="nvarchar" Mode="In" />
+    <Parameter Name="Password" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="StagewiseDataForDashboard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="p1" Type="int" Mode="In" />
   </Function>
   <EntityContainer Name="ETOModelStoreContainer">
     <EntitySet Name="CommentHistory" EntityType="Self.CommentHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyDetails" EntityType="Self.CompanyDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TaskDetails" EntityType="Self.TaskDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TaskHistory" EntityType="Self.TaskHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_User_Task" Association="Self.FK_User_Task">
-      <End Role="TaskDetails" EntitySet="TaskDetails" />
-      <End Role="TaskDetails1" EntitySet="TaskDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK_UserDetails_UserDetails" Association="Self.FK_UserDetails_UserDetails">
-      <End Role="UserDetails" EntitySet="UserDetails" />
-      <End Role="UserDetails1" EntitySet="UserDetails" />
-    </AssociationSet>
     <AssociationSet Name="FK_UserDetails_UserRole" Association="Self.FK_UserDetails_UserRole">
       <End Role="UserDetails" EntitySet="UserDetails" />
       <End Role="UserRole" EntitySet="UserRole" />

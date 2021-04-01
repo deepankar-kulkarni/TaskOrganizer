@@ -15,6 +15,36 @@
           <Property Name="Commenter" Type="nvarchar" MaxLength="150" />
           <Property Name="Comment" Type="nvarchar" MaxLength="1500" />
           <Property Name="Commented_On" Type="datetime2" Precision="7" />
+          <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_On" Type="datetime2" Precision="7" />
+          <Property Name="Modified_On" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="CompanyDetails">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="150" />
+          <Property Name="Manager" Type="nvarchar" MaxLength="150" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+          <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_On" Type="datetime2" Precision="7" />
+          <Property Name="Modified_On" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DeptId" />
+          </Key>
+          <Property Name="DeptId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ManagerId" Type="int" />
+          <Property Name="ManagerName" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_On" Type="datetime2" Precision="7" />
+          <Property Name="Modified_by" Type="nvarchar" MaxLength="150" />
+          <Property Name="Modified_on" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="TaskDetails">
           <Key>
@@ -32,6 +62,10 @@
           <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="Stage" Type="nvarchar" MaxLength="50" />
           <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_On" Type="datetime2" Precision="7" />
+          <Property Name="Modified_On" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="TaskHistory">
           <Key>
@@ -42,6 +76,10 @@
           <Property Name="TaskId" Type="int" Nullable="false" />
           <Property Name="Action" Type="nvarchar" MaxLength="500" />
           <Property Name="Date" Type="datetime2" Precision="7" />
+          <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_On" Type="datetime2" Precision="7" />
+          <Property Name="Modified_On" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="UserDetails">
           <Key>
@@ -49,13 +87,19 @@
           </Key>
           <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LoginId" Type="nvarchar" MaxLength="100" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Department" Type="nvarchar" MaxLength="100" />
           <Property Name="RecoveryQuestion" Type="nvarchar" MaxLength="150" />
           <Property Name="RecoveryAns" Type="nvarchar" MaxLength="150" />
           <Property Name="RecoveryEmail" Type="nvarchar" MaxLength="50" />
           <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Modified_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_On" Type="datetime2" Precision="7" />
+          <Property Name="Modified_On" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -64,31 +108,12 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="Username" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_By" Type="nvarchar" MaxLength="150" />
+          <Property Name="Modified_by" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_On" Type="datetime2" Precision="7" />
+          <Property Name="Modified_On" Type="datetime2" Precision="7" />
         </EntityType>
-        <Association Name="FK_User_Task">
-          <End Role="TaskDetails" Type="Self.TaskDetails" Multiplicity="1" />
-          <End Role="TaskDetails1" Type="Self.TaskDetails" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TaskDetails">
-              <PropertyRef Name="TaskId" />
-            </Principal>
-            <Dependent Role="TaskDetails1">
-              <PropertyRef Name="TaskId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserDetails_UserDetails">
-          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
-          <End Role="UserDetails1" Type="Self.UserDetails" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="UserDetails">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="UserDetails1">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserDetails_UserRole">
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -101,6 +126,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_GetAllDepartmentDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GetAllUsersDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GetComment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Taskid" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_GetDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserName" Type="nvarchar" Mode="In" />
         </Function>
@@ -111,27 +141,41 @@
           <Parameter Name="fromDate" Type="datetime2" Mode="In" />
           <Parameter Name="toDate" Type="datetime2" Mode="In" />
         </Function>
+        <Function Name="sp_GetFilteredData_new" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="stage" Type="nvarchar" Mode="In" />
+          <Parameter Name="priority" Type="int" Mode="In" />
+          <Parameter Name="fromDate" Type="datetime2" Mode="In" />
+          <Parameter Name="toDate" Type="datetime2" Mode="In" />
+        </Function>
         <Function Name="sp_GetPendingTaskForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Username" Type="nvarchar" Mode="In" />
           <Parameter Name="TodaysDate" Type="datetime2" Mode="In" />
+        </Function>
+        <Function Name="sp_GetSpecificTaskDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Taskid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetTaskHstory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Taskid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetUserwiseTaskDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LoginId" Type="nvarchar" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="StagewiseDataForDashboard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="p1" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ETOModelStoreContainer">
           <EntitySet Name="CommentHistory" EntityType="Self.CommentHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyDetails" EntityType="Self.CompanyDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskDetails" EntityType="Self.TaskDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskHistory" EntityType="Self.TaskHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_User_Task" Association="Self.FK_User_Task">
-            <End Role="TaskDetails" EntitySet="TaskDetails" />
-            <End Role="TaskDetails1" EntitySet="TaskDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserDetails_UserDetails" Association="Self.FK_UserDetails_UserDetails">
-            <End Role="UserDetails" EntitySet="UserDetails" />
-            <End Role="UserDetails1" EntitySet="UserDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserDetails_UserRole" Association="Self.FK_UserDetails_UserRole">
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="UserRole" EntitySet="UserRole" />
@@ -141,6 +185,47 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ETOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CommentHistory">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="Commenter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Comment" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+          <Property Name="Commented_On" Type="DateTime" Precision="7" />
+          <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_On" Type="DateTime" Precision="7" />
+          <Property Name="Modified_On" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="CompanyDetail">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Manager" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_On" Type="DateTime" Precision="7" />
+          <Property Name="Modified_On" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DeptId" />
+          </Key>
+          <Property Name="DeptId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ManagerId" Type="Int32" />
+          <Property Name="ManagerName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_On" Type="DateTime" Precision="7" />
+          <Property Name="Modified_by" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Modified_on" Type="DateTime" Precision="7" />
+        </EntityType>
         <EntityType Name="TaskDetail">
           <Key>
             <PropertyRef Name="TaskId" />
@@ -157,8 +242,10 @@
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <Property Name="Stage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="TaskDetails1" Relationship="Self.FK_User_Task" FromRole="TaskDetails" ToRole="TaskDetails1" />
-          <NavigationProperty Name="TaskDetail1" Relationship="Self.FK_User_Task" FromRole="TaskDetails1" ToRole="TaskDetails" />
+          <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_On" Type="DateTime" Precision="7" />
+          <Property Name="Modified_On" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="TaskHistory">
           <Key>
@@ -169,6 +256,10 @@
           <Property Name="TaskId" Type="Int32" Nullable="false" />
           <Property Name="Action" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Date" Type="DateTime" Precision="7" />
+          <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_On" Type="DateTime" Precision="7" />
+          <Property Name="Modified_On" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="UserDetail">
           <Key>
@@ -176,16 +267,20 @@
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LoginId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RecoveryQuestion" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="RecoveryAns" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="RecoveryEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserDetails1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails" ToRole="UserDetails1" />
-          <NavigationProperty Name="UserDetail1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails1" ToRole="UserDetails" />
-          <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserDetails_UserRole" FromRole="UserDetails" ToRole="UserRole" />
           <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_On" Type="DateTime" Precision="7" />
+          <Property Name="Modified_On" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserDetails_UserRole" FromRole="UserDetails" ToRole="UserRole" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -194,32 +289,13 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Modified_by" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Created_On" Type="DateTime" Precision="7" />
+          <Property Name="Modified_On" Type="DateTime" Precision="7" />
           <NavigationProperty Name="UserDetail" Relationship="Self.FK_UserDetails_UserRole" FromRole="UserRole" ToRole="UserDetails" />
         </EntityType>
-        <Association Name="FK_User_Task">
-          <End Role="TaskDetails" Type="Self.TaskDetail" Multiplicity="1" />
-          <End Role="TaskDetails1" Type="Self.TaskDetail" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TaskDetails">
-              <PropertyRef Name="TaskId" />
-            </Principal>
-            <Dependent Role="TaskDetails1">
-              <PropertyRef Name="TaskId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserDetails_UserDetails">
-          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
-          <End Role="UserDetails1" Type="Self.UserDetail" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="UserDetails">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="UserDetails1">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserDetails_UserRole">
           <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -233,54 +309,69 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ETOEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CommentHistories" EntityType="Self.CommentHistory" />
+          <EntitySet Name="CompanyDetails" EntityType="Self.CompanyDetail" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="TaskDetails" EntityType="Self.TaskDetail" />
           <EntitySet Name="TaskHistories" EntityType="Self.TaskHistory" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
-          <AssociationSet Name="FK_User_Task" Association="Self.FK_User_Task">
-            <End Role="TaskDetails" EntitySet="TaskDetails" />
-            <End Role="TaskDetails1" EntitySet="TaskDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserDetails_UserDetails" Association="Self.FK_UserDetails_UserDetails">
-            <End Role="UserDetails" EntitySet="UserDetails" />
-            <End Role="UserDetails1" EntitySet="UserDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserDetails_UserRole" Association="Self.FK_UserDetails_UserRole">
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="UserRole" EntitySet="UserRoles" />
           </AssociationSet>
-          <FunctionImport Name="StagewiseDataForDashboard">
-          <Parameter Name="p1" Mode="In" Type="Int32" />
+          <FunctionImport Name="sp_GetAllUsersDetails" ReturnType="Collection(ETOModel.sp_GetAllUsersDetails_Result)" />
+          <FunctionImport Name="sp_GetComment" ReturnType="Collection(ETOModel.sp_GetComment_Result)">
+          <Parameter Name="Taskid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_GetDashboardData" ReturnType="Collection(ETOModel.sp_GetDashboardData_Result)">
           <Parameter Name="UserName" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_GetFilteredData" ReturnType="Collection(ETOModel.sp_GetFilteredData_Result1)">
+          <FunctionImport Name="sp_GetFilteredData">
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="stage" Mode="In" Type="String" />
             <Parameter Name="priority" Mode="In" Type="Int32" />
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <EntitySet Name="CommentHistories" EntityType="ETOModel.CommentHistory" />
+          <FunctionImport Name="sp_GetFilteredData_new">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="stage" Mode="In" Type="String" />
+            <Parameter Name="priority" Mode="In" Type="Int32" />
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
           <FunctionImport Name="sp_GetPendingTaskForUser" ReturnType="Collection(ETOModel.sp_GetPendingTaskForUser_Result)">
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="TodaysDate" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="sp_GetSpecificTaskDetails" ReturnType="Collection(ETOModel.sp_GetSpecificTaskDetails_Result)">
+          <Parameter Name="Taskid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetTaskHstory" ReturnType="Collection(String)">
+          <Parameter Name="Taskid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetUserwiseTaskDetails" ReturnType="Collection(ETOModel.sp_GetUserwiseTaskDetails_Result)">
+          <Parameter Name="Username" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Login" ReturnType="Collection(Int32)">
+            <Parameter Name="LoginId" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="StagewiseDataForDashboard" ReturnType="Collection(ETOModel.StagewiseDataForDashboard_Result)">
+          <Parameter Name="p1" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetAllDepartmentDetails" ReturnType="Collection(ETOModel.sp_GetAllDepartmentDetails_Result)" />
         </EntityContainer>
-        <ComplexType Name="stagewise_data_for_dashboard_Result">
-          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
-          <Property Type="Int32" Name="Pending" Nullable="true" />
-          <Property Type="Int32" Name="OnHold" Nullable="true" />
-          <Property Type="Int32" Name="InProgress" Nullable="true" />
-          <Property Type="Int32" Name="Completed" Nullable="true" />
+        <ComplexType Name="sp_GetAllUsersDetails_Result">
+          <Property Type="Int32" Name="Userid" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Department" Nullable="true" MaxLength="100" />
         </ComplexType>
-        <ComplexType Name="StagewiseDataForDashboard_Result">
-          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
-          <Property Type="Int32" Name="Pending" Nullable="true" />
-          <Property Type="Int32" Name="OnHold" Nullable="true" />
-          <Property Type="Int32" Name="InProgress" Nullable="true" />
-          <Property Type="Int32" Name="Completed" Nullable="true" />
+        <ComplexType Name="sp_GetComment_Result">
+          <Property Type="String" Name="Comment" Nullable="true" MaxLength="1500" />
+          <Property Type="String" Name="Commenter" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="Commented_On" Nullable="true" />
         </ComplexType>
         <ComplexType Name="sp_GetDashboardData_Result">
           <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
@@ -290,43 +381,51 @@
           <Property Type="Int32" Name="Completed" Nullable="true" />
           <Property Type="Int32" Name="NotStarted" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="sp_GetFilteredData_Result">
-          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
-          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
-          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="DueDate" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_GetFilteredData1_Result">
-          <Property Type="Int32" Name="TaskId" Nullable="false" />
-          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
-          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
-          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="DueDate" Nullable="true" />
-          <Property Type="Boolean" Name="Status" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="sp_GetFilteredData_Result1">
-          <Property Type="Int32" Name="TaskId" Nullable="false" />
-          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
-          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
-          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="DueDate" Nullable="true" />
-          <Property Type="Boolean" Name="Status" Nullable="false" />
-        </ComplexType>
-        <EntityType Name="CommentHistory">
-          <Key>
-            <PropertyRef Name="CommentId" />
-          </Key>
-          <Property Name="CommentId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="TaskId" Type="Int32" Nullable="false" />
-          <Property Name="Commenter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Comment" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
-          <Property Name="Commented_On" Type="DateTime" Precision="7" />
-        </EntityType>
         <ComplexType Name="sp_GetPendingTaskForUser_Result">
           <Property Type="Int32" Name="TaskId" Nullable="false" />
           <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
           <Property Type="String" Name="stage" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_GetSpecificTaskDetails_Result">
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+          <Property Type="String" Name="TaskDescription" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="DueDate" Nullable="true" />
+          <Property Type="String" Name="CompletedBy" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="CompletedDate" Nullable="true" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="Priority" Nullable="false" />
+          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="TaskCreationDate" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_GetUserwiseTaskDetails_Result">
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+          <Property Type="String" Name="TaskDescription" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="DueDate" Nullable="true" />
+          <Property Type="String" Name="CompletedBy" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="CompletedDate" Nullable="true" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="Priority" Nullable="false" />
+          <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="TaskCreationDate" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="StagewiseDataForDashboard_Result">
+          <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="Pending" Nullable="true" />
+          <Property Type="Int32" Name="OnHold" Nullable="true" />
+          <Property Type="Int32" Name="InProgress" Nullable="true" />
+          <Property Type="Int32" Name="Completed" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_GetAllDepartmentDetails_Result">
+          <Property Type="Int32" Name="DeptId" Nullable="false" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ManagerId" Nullable="true" />
+          <Property Type="String" Name="ManagerName" Nullable="true" MaxLength="150" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -334,6 +433,50 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ETOModelStoreContainer" CdmEntityContainer="ETOEntities">
+          <EntitySetMapping Name="CommentHistories">
+            <EntityTypeMapping TypeName="ETOModel.CommentHistory">
+              <MappingFragment StoreEntitySet="CommentHistory">
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Commenter" ColumnName="Commenter" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Commented_On" ColumnName="Commented_On" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyDetails">
+            <EntityTypeMapping TypeName="ETOModel.CompanyDetail">
+              <MappingFragment StoreEntitySet="CompanyDetails">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="ETOModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Modified_on" ColumnName="Modified_on" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TaskDetails">
             <EntityTypeMapping TypeName="ETOModel.TaskDetail">
               <MappingFragment StoreEntitySet="TaskDetails">
@@ -349,6 +492,10 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Stage" ColumnName="Stage" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -360,21 +507,31 @@
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="Action" ColumnName="Action" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserDetails">
             <EntityTypeMapping TypeName="ETOModel.UserDetail">
               <MappingFragment StoreEntitySet="UserDetails">
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="RecoveryQuestion" ColumnName="RecoveryQuestion" />
                 <ScalarProperty Name="RecoveryAns" ColumnName="RecoveryAns" />
                 <ScalarProperty Name="RecoveryEmail" ColumnName="RecoveryEmail" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -384,10 +541,32 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Modified_by" ColumnName="Modified_by" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Modified_On" ColumnName="Modified_On" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="StagewiseDataForDashboard" FunctionName="ETOModel.Store.StagewiseDataForDashboard" />
+          <FunctionImportMapping FunctionImportName="sp_GetAllUsersDetails" FunctionName="ETOModel.Store.sp_GetAllUsersDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.sp_GetAllUsersDetails_Result">
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetComment" FunctionName="ETOModel.Store.sp_GetComment">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.sp_GetComment_Result">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Commenter" ColumnName="Commenter" />
+                <ScalarProperty Name="Commented_On" ColumnName="Commented_On" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_GetDashboardData" FunctionName="ETOModel.Store.sp_GetDashboardData">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ETOModel.sp_GetDashboardData_Result">
@@ -400,36 +579,73 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_GetFilteredData" FunctionName="ETOModel.Store.sp_GetFilteredData">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ETOModel.sp_GetFilteredData_Result1">
-                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
-                <ScalarProperty Name="Assignee" ColumnName="Assignee" />
-                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
-                <ScalarProperty Name="Stage" ColumnName="Stage" />
-                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="CommentHistories">
-            <EntityTypeMapping TypeName="ETOModel.CommentHistory">
-              <MappingFragment StoreEntitySet="CommentHistory">
-                <ScalarProperty Name="Commented_On" ColumnName="Commented_On" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="Commenter" ColumnName="Commenter" />
-                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetFilteredData" FunctionName="ETOModel.Store.sp_GetFilteredData" />
+          <FunctionImportMapping FunctionImportName="sp_GetFilteredData_new" FunctionName="ETOModel.Store.sp_GetFilteredData_new" />
           <FunctionImportMapping FunctionImportName="sp_GetPendingTaskForUser" FunctionName="ETOModel.Store.sp_GetPendingTaskForUser">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ETOModel.sp_GetPendingTaskForUser_Result">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="TaskName" ColumnName="TaskName" />
                 <ScalarProperty Name="stage" ColumnName="stage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetSpecificTaskDetails" FunctionName="ETOModel.Store.sp_GetSpecificTaskDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.sp_GetSpecificTaskDetails_Result">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="TaskDescription" ColumnName="TaskDescription" />
+                <ScalarProperty Name="Assignee" ColumnName="Assignee" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="CompletedBy" ColumnName="CompletedBy" />
+                <ScalarProperty Name="CompletedDate" ColumnName="CompletedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="TaskCreationDate" ColumnName="TaskCreationDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetTaskHstory" FunctionName="ETOModel.Store.sp_GetTaskHstory" />
+          <FunctionImportMapping FunctionImportName="sp_GetUserwiseTaskDetails" FunctionName="ETOModel.Store.sp_GetUserwiseTaskDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.sp_GetUserwiseTaskDetails_Result">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="TaskDescription" ColumnName="TaskDescription" />
+                <ScalarProperty Name="Assignee" ColumnName="Assignee" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="CompletedBy" ColumnName="CompletedBy" />
+                <ScalarProperty Name="CompletedDate" ColumnName="CompletedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="TaskCreationDate" ColumnName="TaskCreationDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_Login" FunctionName="ETOModel.Store.sp_Login" />
+          <FunctionImportMapping FunctionImportName="StagewiseDataForDashboard" FunctionName="ETOModel.Store.StagewiseDataForDashboard">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.StagewiseDataForDashboard_Result">
+                <ScalarProperty Name="Assignee" ColumnName="Assignee" />
+                <ScalarProperty Name="Pending" ColumnName="Pending" />
+                <ScalarProperty Name="OnHold" ColumnName="OnHold" />
+                <ScalarProperty Name="InProgress" ColumnName="InProgress" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetAllDepartmentDetails" FunctionName="ETOModel.Store.sp_GetAllDepartmentDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ETOModel.sp_GetAllDepartmentDetails_Result">
+                <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

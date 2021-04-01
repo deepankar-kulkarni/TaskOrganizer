@@ -168,28 +168,28 @@ body {
     width: 90%;
     height: 400px;
     overflow-y: auto;
-    margin: auto;
+    margin: 0 auto;
     padding: 0 10% 0 22%; /* this needs to be bigger than footer height*/
 }
 .footer {
     position: fixed;
-    margin-top: -50px; /*negative value of footer height */
+    margin-top: -70px; /*negative value of footer height */
     height: 80px;
     clear: both;
-    padding: 8% 10% 0 22%;
+    padding: 6.5% 10% 0 22%;
 }
 .button{
-    margin:20px;
+    margin:5px;
     width:80px;
 }
 
 #comment,#history{
     padding-left:18%;
 }
-/*#comment {
-    overflow-y: auto;
+#comment {
+   
     height:100px;
-}*/
+}
 .history-text {
     font-size: 10px;
     font-family: Helvetica, sans-serif;
@@ -210,4 +210,36 @@ body {
     width: 80%;
     margin: auto;
     padding: 8% 10% 0 22%;
+}
+
+hr{
+    margin-top:0;
+}
+
+/*popup*/
+.popup-container {
+    /* display:none;*/
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vh;
+    background-color: rgba(0,0,0,0.3);
+}
+
+    .popup-container .show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .popup {
+        background-color: #fff;
+        Width: 600px;
+        max-height: 200px;
+    }
+.popup{
+    padding:10px;
 }

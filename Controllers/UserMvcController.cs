@@ -12,23 +12,30 @@ using TaskOrganizer.database;
 using TaskOrganizer.Models;
 using TaskOrganizer.Report;
 
+
 namespace TaskOrganizer.Controllers
 {
     
     public class UserMvcController : Controller
     {
         //get userwise tasks
+        List<Task> tasks = new List<Task>();
         public ActionResult GetUserWiseTask(string username)
         {
             using (ETOEntities eto = new ETOEntities())
             {
-                var result = (from user in eto.UserDetails
-                              join task in eto.TaskDetails on user.UserId equals task.UserId
-                              where task.Assignee == username
-                              select new Task { TaskId = task.TaskId, TaskName=task.TaskName, TaskDescription= task.TaskDescription, Assignee= task.Assignee, DueDate= (DateTime)task.DueDate, CompletedBy= task.CompletedBy, CompletedDate= task.CompletedDate, Status= task.Status, Priority=  task.Priority, Stage= task.Stage , TaskCreationDate = task.TaskCreationDate,UserId=task.UserId}).ToList();
-                             // select task).ToList();
-                
-                return View(result);
+                var result = eto.sp_GetUserwiseTaskDetails(username).ToList();
+                foreach (var item in result)
+                {
+                    Task tsk = new Task();
+                    tsk.TaskId = item.TaskId;
+                    tsk.Assignee = item.Assignee;
+                    tsk.DueDate = (DateTime)item.DueDate;
+                    tsk.TaskName = item.TaskName;
+                    tsk.Stage = item.Stage;
+                    tasks.Add(tsk);
+                }
+                return View(tasks);
             }
         }
 
@@ -51,13 +58,11 @@ namespace TaskOrganizer.Controllers
             using (ETOEntities eto = new ETOEntities())
             {
                 int id = (from user in eto.UserDetails
-                          join tsk in eto.TaskDetails on user.UserId equals tsk.UserId
-                          where tsk.Assignee == task.Assignee
+                          where user.UserName == task.Assignee
                           select user.UserId).FirstOrDefault();
 
                 TaskDetail taskDetail = new TaskDetail();
                 taskDetail.UserId = id;
-                taskDetail.TaskId = task.TaskId;
                 taskDetail.TaskName = task.TaskName;
                 taskDetail.TaskDescription = task.TaskDescription;
                 taskDetail.Assignee = task.Assignee;
@@ -65,13 +70,18 @@ namespace TaskOrganizer.Controllers
                 taskDetail.Priority = (int)task.Prioritytext;
                 taskDetail.TaskCreationDate = DateTime.Now;
                 taskDetail.Stage = task.Stage;
+                taskDetail.Created_By = User.Identity.Name;
+                taskDetail.Created_On = DateTime.Now;
                 
                 eto.TaskDetails.Add(taskDetail);
                 eto.SaveChanges();
 
+                int taskid = Convert.ToInt32((from tsk in eto.TaskDetails
+                          select tsk.TaskId).Max().ToString());
+
                 TaskHistory th = new TaskHistory();
                 th.UserId = id;
-                th.TaskId = task.TaskId;
+                th.TaskId = taskid;
                 th.Date = DateTime.Now;
                 th.Action = User.Identity.Name + " " + "Created a task ";
                 eto.TaskHistories.Add(th);
@@ -140,33 +150,22 @@ namespace TaskOrganizer.Controllers
             {
                 
                 Task task = null;
-                task = eto.TaskDetails.Where(x => x.TaskId == id).Select(x => new Task()
-                {
+                var taskResult = eto.sp_GetSpecificTaskDetails(id).FirstOrDefault();
+                task = new Task();
+                task.TaskId = taskResult.TaskId;
+                task.TaskName = taskResult.TaskName;
+                task.Assignee = taskResult.Assignee;
+                task.TaskDescription = taskResult.TaskDescription;
+                task.DueDate = (DateTime)taskResult.DueDate;
+                task.Stage = taskResult.Stage;
+                task.Prioritytext = (priority)taskResult.Priority;
+                
 
-                    TaskId = x.TaskId,
-                    UserId = x.UserId,
-                    TaskName = x.TaskName,
-                    TaskDescription = x.TaskDescription,
-                    DueDate = (DateTime)x.DueDate,
-                    Assignee = x.Assignee,
-                    CompletedDate = x.CompletedDate,
-                    CompletedBy = x.CompletedBy,
-                    TaskCreationDate = x.TaskCreationDate,
-                    Status = x.Status,
-                    Prioritytext = (priority)x.Priority,
-                    Stage = x.Stage,
-                    Priority = x.Priority
-
-
-                }).FirstOrDefault<Task>();
                 ViewBag.AssigneeList = getAllUsers();
                 //get task history
-                task.taskHistory = eto.TaskHistories.Where(x => x.TaskId == id).Select(x => x.Action).ToList();
-                var result = (from comment in eto.CommentHistories
-                       where comment.TaskId == id
-                       orderby comment.Commented_On descending
-                       select new  { Comment = comment.Comment, Commenter = comment.Commenter, Commented_On = comment.Commented_On }).ToList();  //eto.CommentHistories.Where(x => x.TaskId == id).Select(x => new CommentHistory { Comment = x.Comment, Commenter = x.Commenter, Commented_On = x.Commented_On }).ToList();
-                foreach (var item in result)
+                task.taskHistory = eto.sp_GetTaskHstory(id).ToList();
+                var commentResult = eto.sp_GetComment(id).ToList();  
+                foreach (var item in commentResult)
                 {
                     CommentsHistory comnt = new CommentsHistory();
                     comnt.Commenter = item.Commenter;
@@ -185,12 +184,12 @@ namespace TaskOrganizer.Controllers
 
             using (ETOEntities eto = new ETOEntities())
             {
-                var result = (from user in eto.UserDetails
-                              select user.UserName).ToList();
+                var result = eto.sp_GetAllUsersDetails().ToList();
                 foreach (var item in result)
                 {
-                    assignee.Add(new SelectListItem { Text = item, Value = item });
+                    assignee.Add(new SelectListItem { Text = item.UserName, Value = item.UserName });
                 }
+                // to get all the assignee
                 assignee.Add(new SelectListItem { Text = "All", Value = "All" });
                 return assignee;
             }
@@ -223,7 +222,7 @@ namespace TaskOrganizer.Controllers
                 CommentHistory comm = new CommentHistory();
                 comm.TaskId = th.TaskId;
                 comm.UserId = th.UserId;
-                comm.Commenter = task.Assignee;
+                comm.Commenter = User.Identity.Name;
                 comm.Commented_On = DateTime.Now;
                 comm.Comment = task.comment;
                 eto.CommentHistories.Add(comm);
@@ -248,11 +247,9 @@ namespace TaskOrganizer.Controllers
                     tsk.Status = false;
                 }
                 eto.SaveChanges();
-                task.taskHistory = eto.TaskHistories.Where(x => x.TaskId == th.TaskId).Select(x => x.Action).ToList();
-                var result = (from comment in eto.CommentHistories
-                       where comment.TaskId == th.TaskId
-                              select new { Comment = comment.Comment, Commenter = comment.Commenter, Commented_On = comment.Commented_On }).ToList();
-                foreach (var item in result)
+                task.taskHistory = eto.sp_GetTaskHstory(task.TaskId).ToList();
+                var commentResult = eto.sp_GetComment(task.TaskId).ToList();
+                foreach (var item in commentResult)
                 {
                     CommentsHistory comnt = new CommentsHistory();
                     comnt.Commenter = item.Commenter;
@@ -380,51 +377,97 @@ namespace TaskOrganizer.Controllers
             }
         }
 
-        public JsonResult GetFilteredData(string username,string stage,int priority,DateTime fromDate, DateTime toDate)
-        {
+        //public JsonResult GetFilteredData(string username,string stage,int priority,DateTime fromDate, DateTime toDate)
+        //{
            
-            using (ETOEntities eto = new ETOEntities())
-            {
-                if (username == "All")
-                {
-                    var result = eto.sp_GetFilteredData("-1", stage, priority, fromDate, toDate).ToList();
-                    return Json(new { result });
-                }
-                else
-                {
-                    var result = eto.sp_GetFilteredData(username, stage, priority, fromDate, toDate).ToList();
-                    return Json(new { result });
-                }
+        //    using (ETOEntities eto = new ETOEntities())
+        //    {
+        //        if (username == "All")
+        //        {
+        //            var result = eto.sp_GetFilteredData("-1", stage, priority, fromDate, toDate).ToList();
+        //            return Json(new { result });
+        //        }
+        //        else
+        //        {
+        //            var result = eto.sp_GetFilteredData(username, stage, priority, fromDate, toDate).ToList();
+        //            return Json(new { result });
+        //        }
                
                
-            }
-        }
+        //    }
+        //}
 
         //create user
         public ActionResult CreateUser()
         {
+            ViewBag.DepartmentList = getAllDepartments();
             return View();
         }
         [HttpPost]
         public ActionResult CreateUser(User user)
         {
-            using (var client = new HttpClient())
-            {
                 UserDetail ud = new UserDetail();
                 ud.UserName = user.UserName;
+                ud.LoginId = user.LoginId;
                 ud.Password = user.Password;
                 ud.Email = user.Email;
                 ud.Mobile = user.Mobile;
-                using (ETOEntities eto = new ETOEntities())
-                {
+                ViewBag.DepartmentList = getAllDepartments();
+            using (ETOEntities eto = new ETOEntities())
+                { 
                     eto.UserDetails.Add(ud);
-                    eto.SaveChanges();
+                    var result =  eto.SaveChanges();
+                    if (result == 1)
+                    {
+                    
+                    ViewBag.UserCrestedMessage = "User : " +" "+ user.UserName + " "+ "Created Successfully";
+                    }
+               
+                         return View();
                 }
+        }
 
-                return RedirectToAction("AdminDashboard", "UserMvc");
+        public IList<SelectListItem> getAllDepartments()
+        {
+            List<SelectListItem> DepartmentList = new List<SelectListItem>();
 
+            using (ETOEntities eto = new ETOEntities())
+            {
+                var result = eto.sp_GetAllDepartmentDetails().ToList();
+                foreach (var item in result)
+                {
+                    DepartmentList.Add(new SelectListItem { Text = item.DepartmentName, Value = item.DepartmentName });
+                }
+                // to get all the assignee
+                
+                return DepartmentList;
             }
 
+        }
+        public ActionResult CreateDepartment()
+        {
+            ViewBag.AssigneeList = getAllUsers();
+            return View();
+        }
+
+        [HttpPost]    
+        public ActionResult CreateDepartment(DepartmentDetails dept)
+        {
+            using (ETOEntities eto = new ETOEntities())
+            {
+                int id = (from user in eto.UserDetails
+                          where user.UserName == dept.ManagerName
+                          select user.UserId).FirstOrDefault();
+                ViewBag.AssigneeList = getAllUsers();
+                Department department = new Department();
+                department.DepartmentName = dept.DepartmentName;
+                department.ManagerId = id;
+                department.ManagerName = dept.ManagerName;
+                eto.Departments.Add(department);
+
+                return RedirectToAction("AdminDashboard", "UserMvc");
+            }
+                
         }
 
         public FileResult ExportPdf(Task task)
@@ -444,6 +487,11 @@ namespace TaskOrganizer.Controllers
                 byte[] reportBytes = report.PrepareReport(task);
                 return File(reportBytes, "application/pdf", "export.pdf");
             }
+        }
+
+        public ActionResult UserProfile()
+        {
+            return View();
         }
     }
 }

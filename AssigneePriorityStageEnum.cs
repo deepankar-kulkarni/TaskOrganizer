@@ -8,7 +8,7 @@ namespace TaskOrganizer
     public enum priority
     {
         Low,
-        Medum,
+        Medium,
         High
     }
 }

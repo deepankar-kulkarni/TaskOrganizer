@@ -65,3 +65,4 @@ D:\Projects\TaskOrganizer\obj\Debug\TaskOrganizer.csproj.CopyComplete
 D:\Projects\TaskOrganizer\obj\Debug\TaskOrganizer.dll
 D:\Projects\TaskOrganizer\obj\Debug\TaskOrganizer.pdb
 D:\Projects\TaskOrganizer\obj\Debug\TaskOrganizer.csprojAssemblyReference.cache
+D:\Projects\TaskOrganizer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml

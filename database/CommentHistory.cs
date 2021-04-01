@@ -20,5 +20,9 @@ namespace TaskOrganizer.database
         public string Commenter { get; set; }
         public string Comment { get; set; }
         public Nullable<System.DateTime> Commented_On { get; set; }
+        public string Created_By { get; set; }
+        public string Modified_By { get; set; }
+        public Nullable<System.DateTime> Created_On { get; set; }
+        public Nullable<System.DateTime> Modified_On { get; set; }
     }
 }

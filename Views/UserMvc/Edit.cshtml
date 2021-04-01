@@ -138,7 +138,7 @@
             @Html.ValidationMessageFor(model => model.TaskDescription, "", new { @class = "text-danger" })
         </div>
         <div class="col-md-offset-2 col-md-12">
-            <button class="btn btn-primary button" id="btnSave" type="submit" disabled="disabled" onclick="location.href='@Url.Action("Edit", "UserMvc",Model)'">Save</button>
+            <button class="btn btn-primary button" id="btnSave" type="submit" disabled="disabled" onclick="location.href='@Url.Action("Edit", "UserMvc",new {TaskId = Model.TaskId,TaskName=Model.TaskName })'">Save</button>
             <button class="btn btn-danger button" id="btnDelete" type="submit" disabled="disabled" onclick="location.href='@Url.Action("Delete", "UserMvc")'">Delete</button>
         </div>
     </div>

@@ -27,19 +27,26 @@ namespace TaskOrganizer.database
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<CommentHistory> CommentHistories { get; set; }
+        public virtual DbSet<CompanyDetail> CompanyDetails { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<TaskDetail> TaskDetails { get; set; }
         public virtual DbSet<TaskHistory> TaskHistories { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<CommentHistory> CommentHistories { get; set; }
     
-        public virtual int StagewiseDataForDashboard(Nullable<int> p1)
+        public virtual ObjectResult<sp_GetAllUsersDetails_Result> sp_GetAllUsersDetails()
         {
-            var p1Parameter = p1.HasValue ?
-                new ObjectParameter("p1", p1) :
-                new ObjectParameter("p1", typeof(int));
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetAllUsersDetails_Result>("sp_GetAllUsersDetails");
+        }
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("StagewiseDataForDashboard", p1Parameter);
+        public virtual ObjectResult<sp_GetComment_Result> sp_GetComment(Nullable<int> taskid)
+        {
+            var taskidParameter = taskid.HasValue ?
+                new ObjectParameter("Taskid", taskid) :
+                new ObjectParameter("Taskid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetComment_Result>("sp_GetComment", taskidParameter);
         }
     
         public virtual ObjectResult<sp_GetDashboardData_Result> sp_GetDashboardData(string userName)
@@ -51,7 +58,7 @@ namespace TaskOrganizer.database
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetDashboardData_Result>("sp_GetDashboardData", userNameParameter);
         }
     
-        public virtual ObjectResult<sp_GetFilteredData_Result1> sp_GetFilteredData(string username, string stage, Nullable<int> priority, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        public virtual int sp_GetFilteredData(string username, string stage, Nullable<int> priority, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
         {
             var usernameParameter = username != null ?
                 new ObjectParameter("username", username) :
@@ -73,7 +80,32 @@ namespace TaskOrganizer.database
                 new ObjectParameter("toDate", toDate) :
                 new ObjectParameter("toDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetFilteredData_Result1>("sp_GetFilteredData", usernameParameter, stageParameter, priorityParameter, fromDateParameter, toDateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_GetFilteredData", usernameParameter, stageParameter, priorityParameter, fromDateParameter, toDateParameter);
+        }
+    
+        public virtual int sp_GetFilteredData_new(string username, string stage, Nullable<int> priority, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var stageParameter = stage != null ?
+                new ObjectParameter("stage", stage) :
+                new ObjectParameter("stage", typeof(string));
+    
+            var priorityParameter = priority.HasValue ?
+                new ObjectParameter("priority", priority) :
+                new ObjectParameter("priority", typeof(int));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_GetFilteredData_new", usernameParameter, stageParameter, priorityParameter, fromDateParameter, toDateParameter);
         }
     
         public virtual ObjectResult<sp_GetPendingTaskForUser_Result> sp_GetPendingTaskForUser(string username, Nullable<System.DateTime> todaysDate)
@@ -87,6 +119,60 @@ namespace TaskOrganizer.database
                 new ObjectParameter("TodaysDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetPendingTaskForUser_Result>("sp_GetPendingTaskForUser", usernameParameter, todaysDateParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetSpecificTaskDetails_Result> sp_GetSpecificTaskDetails(Nullable<int> taskid)
+        {
+            var taskidParameter = taskid.HasValue ?
+                new ObjectParameter("Taskid", taskid) :
+                new ObjectParameter("Taskid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetSpecificTaskDetails_Result>("sp_GetSpecificTaskDetails", taskidParameter);
+        }
+    
+        public virtual ObjectResult<string> sp_GetTaskHstory(Nullable<int> taskid)
+        {
+            var taskidParameter = taskid.HasValue ?
+                new ObjectParameter("Taskid", taskid) :
+                new ObjectParameter("Taskid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_GetTaskHstory", taskidParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetUserwiseTaskDetails_Result> sp_GetUserwiseTaskDetails(string username)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetUserwiseTaskDetails_Result>("sp_GetUserwiseTaskDetails", usernameParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> sp_Login(string loginId, string password)
+        {
+            var loginIdParameter = loginId != null ?
+                new ObjectParameter("LoginId", loginId) :
+                new ObjectParameter("LoginId", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_Login", loginIdParameter, passwordParameter);
+        }
+    
+        public virtual ObjectResult<StagewiseDataForDashboard_Result> StagewiseDataForDashboard(Nullable<int> p1)
+        {
+            var p1Parameter = p1.HasValue ?
+                new ObjectParameter("p1", p1) :
+                new ObjectParameter("p1", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<StagewiseDataForDashboard_Result>("StagewiseDataForDashboard", p1Parameter);
+        }
+    
+        public virtual ObjectResult<sp_GetAllDepartmentDetails_Result> sp_GetAllDepartmentDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetAllDepartmentDetails_Result>("sp_GetAllDepartmentDetails");
         }
     }
 }

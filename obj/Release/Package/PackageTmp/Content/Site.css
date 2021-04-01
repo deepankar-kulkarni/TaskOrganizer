@@ -1,0 +1,213 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 80px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.password{
+    width:100%;
+}
+
+/*Navigation Bar*/
+
+body {
+    overflow-x: hidden;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+/* Toggle Styles */
+
+#viewport {
+    padding-left: 250px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#content {
+    width: 100%;
+    position: relative;
+    margin-right: 0;
+}
+
+#content i{
+    padding-right:10px;
+}
+/* Sidebar Styles */
+
+#sidebar {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 250px;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #37474F;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+    #sidebar header {
+        background-color: #263238;
+        font-size: 20px;
+        line-height: 52px;
+        text-align: center;
+    }
+
+        #sidebar header a {
+            color: #fff;
+            display: block;
+            text-decoration: none;
+        }
+
+            #sidebar header a:hover {
+                color: #fff;
+            }
+
+    #sidebar .nav {
+    }
+
+        #sidebar .nav a {
+            background: none;
+            border-bottom: 1px solid #455A64;
+            color: #CFD8DC;
+            font-size: 14px;
+            padding: 16px 24px;
+        }
+
+            #sidebar .nav a:hover {
+                background: none;
+                color: #ECEFF1;
+            }
+
+            #sidebar .nav a i {
+                margin-right: 16px;
+            }
+       
+.header-outer{
+    display:inline-block;
+    width:100%;
+}
+.left{
+    float:left;
+    padding-left:10px;
+    font-size:20px;
+}
+.right{
+    float:right;
+    padding-right:10px;
+}
+.btn{
+    width:13%;
+}
+.add-task{
+    width:110px;
+}
+.table-hover{
+    cursor:pointer;
+}
+
+.card {
+    width: 600px;
+    padding: 30px;
+    position: absolute;
+    background: #e6e6e6;
+    transition: 0.10s;
+    margin-top: 10%;
+}
+.stage-chart {
+    width: 300px;
+    height: 300px;
+}
+.flex {
+    display: flex;
+}
+
+.item {
+    min-height: 50px;
+    display: flex;
+    margin:10px;
+    justify-content: center;
+    align-items: center;
+}
+#assignee-div h5 {
+    padding-right: 10px;
+    padding-left: 0;
+}
+.i3{
+     width: 650px;
+}
+
+.assignee{
+    width:100px;
+    padding:5px;
+}
+.filterBtn {
+    margin-top: 6px;
+}
+#wrap {
+    width:90%;
+    margin:auto;
+    overflow:visible;
+}
+#main {
+    width: 90%;
+    height: 400px;
+    overflow-y: auto;
+    margin: auto;
+    padding: 0 10% 0 22%; /* this needs to be bigger than footer height*/
+}
+.footer {
+    position: fixed;
+    margin-top: -50px; /*negative value of footer height */
+    height: 80px;
+    clear: both;
+    padding: 8% 10% 0 22%;
+}
+.button{
+    margin:20px;
+    width:80px;
+}
+
+#comment,#history{
+    padding-left:18%;
+}
+/*#comment {
+    overflow-y: auto;
+    height:100px;
+}*/
+.history-text {
+    font-size: 10px;
+    font-family: Helvetica, sans-serif;
+}
+.comment-text {
+    font-size: 10px;
+    font-family: Helvetica, sans-serif;
+}
+.comment-label {
+    font-size: 11px;
+}
+.commented-on{
+    font-size:10px;
+    
+}
+
+.main-div {
+    width: 80%;
+    margin: auto;
+    padding: 8% 10% 0 22%;
+}

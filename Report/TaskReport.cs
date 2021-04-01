@@ -65,32 +65,32 @@ namespace TaskOrganizer.Report
             
             using (ETOEntities eto = new ETOEntities())
             {
-                if (task.Assignee == "All")
-                {
-                    var result = eto.sp_GetFilteredData("-1", task.Stage, task.Priority, task.FromDate, task.ToDate).ToList();
-                    foreach (var item in result)
-                    {
-                        Task tsk = new Task();
-                        tsk.Assignee = item.Assignee;
-                        tsk.Stage = item.Stage;
-                        tsk.DueDate = (DateTime)item.DueDate;
-                        tsk.TaskName = item.TaskName;
-                        Tasks.Add(tsk);
-                    }
-                }
-                else
-                {
-                    var result = eto.sp_GetFilteredData(task.Assignee, task.Stage, task.Priority, task.FromDate, task.ToDate).ToList();
-                    foreach (var item in result)
-                    {
-                        Task tsk = new Task();
-                        tsk.Assignee = item.Assignee;
-                        tsk.Stage = item.Stage;
-                        tsk.DueDate = (DateTime)item.DueDate;
-                        tsk.TaskName = item.TaskName;
-                        Tasks.Add(tsk);
-                    }
-                }
+                //if (task.Assignee == "All")
+                //{
+                //    var result = eto.sp_GetFilteredData("-1", task.Stage, task.Priority, task.FromDate, task.ToDate).ToList();
+                //    foreach (var item in result)
+                //    {
+                //        Task tsk = new Task();
+                //        tsk.Assignee = item.Assignee;
+                //        tsk.Stage = item.Stage;
+                //        tsk.DueDate = (DateTime)item.DueDate;
+                //        tsk.TaskName = item.TaskName;
+                //        Tasks.Add(tsk);
+                //    }
+                //}
+                //else
+                //{
+                //    var result = eto.sp_GetFilteredData(task.Assignee, task.Stage, task.Priority, task.FromDate, task.ToDate).ToList();
+                //    foreach (var item in result)
+                //    {
+                //        Task tsk = new Task();
+                //        tsk.Assignee = item.Assignee;
+                //        tsk.Stage = item.Stage;
+                //        tsk.DueDate = (DateTime)item.DueDate;
+                //        tsk.TaskName = item.TaskName;
+                //        Tasks.Add(tsk);
+                //    }
+                //}
                 _FontStyle = FontFactory.GetFont("Tahoma", 8f, 0);
                 foreach (var item in Tasks)
                 {

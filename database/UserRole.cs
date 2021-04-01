@@ -17,6 +17,11 @@ namespace TaskOrganizer.database
         public int id { get; set; }
         public int UserId { get; set; }
         public string Role { get; set; }
+        public string Username { get; set; }
+        public string Created_By { get; set; }
+        public string Modified_by { get; set; }
+        public Nullable<System.DateTime> Created_On { get; set; }
+        public Nullable<System.DateTime> Modified_On { get; set; }
     
         public virtual UserDetail UserDetail { get; set; }
     }

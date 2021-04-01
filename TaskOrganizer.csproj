@@ -147,6 +147,12 @@
     <Compile Include="database\CommentHistory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="database\CompanyDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="database\Department.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="database\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -162,25 +168,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="database\sp_GetAllDepartmentDetails_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="database\sp_GetAllUsersDetails_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="database\sp_GetComment_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="database\sp_GetDashboardData_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="database\sp_GetFilteredData1_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="database\sp_GetFilteredData_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="database\sp_GetFilteredData_Result1.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="database\sp_GetPendingTaskForUser_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="database\StagewiseDataForDashboard_Result.cs">
+    <Compile Include="database\sp_GetSpecificTaskDetails_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="database\stagewise_data_for_dashboard_Result.cs">
+    <Compile Include="database\sp_GetUserwiseTaskDetails_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="database\StagewiseDataForDashboard_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="database\TaskDetail.cs">
@@ -200,6 +209,7 @@
     </Compile>
     <Compile Include="Models\CommentsHistory.cs" />
     <Compile Include="Models\Dashboard.cs" />
+    <Compile Include="Models\DepartmentDetails.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\TaskHistoryDetails.cs" />
     <Compile Include="Models\User.cs" />
@@ -233,8 +243,8 @@
     <Content Include="Content\signup.css" />
     <Content Include="database\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
       <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
     <Content Include="database\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -297,6 +307,8 @@
     <Content Include="Scripts\js.cookie.mjs" />
     <Content Include="Views\UserMvc\_PendingTasksPerUser.cshtml" />
     <Content Include="Views\UserMvc\PendingTasksPerUser.cshtml" />
+    <Content Include="Views\UserMvc\UserProfile.cshtml" />
+    <Content Include="Views\UserMvc\CreateDepartment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

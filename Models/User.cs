@@ -9,6 +9,7 @@ namespace TaskOrganizer.Models
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string Department { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
         public string RecoveryQuestion { get; set; }
@@ -16,6 +17,6 @@ namespace TaskOrganizer.Models
         public string RecoveryEmail { get; set; }
         public string Role { get; set; }
         public string Mobile { get; set; }
-        public string javascriptToCall { get; set; }
+        public string LoginId { get; set; }
     }
 }

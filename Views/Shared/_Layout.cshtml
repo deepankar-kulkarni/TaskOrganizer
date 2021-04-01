@@ -7,11 +7,11 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/Site.css")
-    @Styles.Render("~/Content/bootstrap.css")
     @Scripts.Render("~/bundles/modernizr")
     <script src=" https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="~/Scripts/jquery-3.4.1.js"></script>
-
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -45,14 +45,14 @@
                 </li>
                 <li>
                     <a href="@Url.Action("PendingTasksPerUser","UserMvc")">
-                        <i class="far fa-check-circle icon"></i>Today's Tasks
+                        <i class="fas fa-list"></i>Today's Tasks
                     </a>
                 </li>
                 @if (User.IsInRole("Admin"))
                 {
                     <li>
                         <a href="@Url.Action("getAllTasks","UserMvc")">
-                            <i class="fas fa-list icon"></i>All Tasks
+                            <i class="fas fa-list-alt icon"></i>All Tasks
                         </a>
 
                     </li>
@@ -79,9 +79,13 @@
                         <li>
                             @*<button class="AddUser" id="DisplayPendingTasks">Add User</button>*@
                             @*<button id="DisplayPendingTasks" data-toggle="modal" data-target=".bs-example-modal-lg">Get Tasks</button>*@
+                            <a href="@Url.Action("CreateTask", "UserMvc")">
+                                <i class="fas fa-plus-circle fa-1x"></i>Task
+                            </a>
+                        </li>
+                        <li><a href="@Url.Action("UserProfile","UserMvc")"><i class="far fa-user icon" ></i>@User.Identity.Name</a>
                             
                         </li>
-                        <li><a href="@Url.Action("Dashboard","UserMvc")"><i class="far fa-user icon"></i>@User.Identity.Name</a></li>
                     </ul>
                 </div>
             </nav>
@@ -102,18 +106,3 @@
 
     @RenderSection("scripts", required: false)
 
-<script type="text/javascript">
-   
-        $('#DisplayPendingTasks').on('click', function () {
-
-            var url = $('#myModal').data('url');
-            $.get(url, function (data) {
-                $('#myModal').html(data);
-                $('#myModal').modal('show');
-
-            });
-
-        });
-  
-
-</script>

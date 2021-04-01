@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TaskOrganizer.Models.Dashboard>
+
+@{
+    ViewBag.Title = "AdminDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/Site.css")
+@Styles.Render("~/Content/bootstrap.css")
+@Scripts.Render("~/bundles/modernizr")
+
+<script src="~/Scripts/Dashboard.js"></script>
+<script src="~/Scripts/Chart.js"></script>
+
+<h3>Dashboard</h3>
+<div class="stage-chart">
+    <span>Total Tasks: <label id="totalTasks"></label></span>
+    <canvas id="stageCanvas" height="20" width="20"></canvas>
+</div>
+<div class="row">
+    <div class="col-12 col-lg-8 cal-xxl-9 d-flex">
+        <div class="card flex-fill w-100">
+            <div class="card-header">
+                <h5 class="card-title">Task Details</h5>
+            </div>
+            <table class="table table-hover my-0">
+                <thead>
+                    <tr>
+                        <td>Assigneee</td>
+                        <td class="d-none d-xl-table-cell">Pending</td>
+                        <td class="d-none d-xl-table-cell">On Hold</td>
+                        <td class="d-none d-xl-table-cell">In Progress</td>
+                        <td class="d-none d-xl-table-cell">Not Started</td>
+                        <td class="d-none d-xl-table-cell">Completed</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="d-none d-xl-table-cell">@Html.DisplayFor(modelItem => item.Assignee)</td>
+                            <td class="d-none d-xl-table-cell"> @Html.DisplayFor(modelItem => item.Pending)</td>
+                            <td class="d-none d-xl-table-cell"> @Html.DisplayFor(modelItem => item.OnHold)</td>
+                            <td class="d-none d-xl-table-cell"> @Html.DisplayFor(modelItem => item.InProgress)</td>
+                            <td class="d-none d-xl-table-cell">@Html.DisplayFor(modelItem => item.NotStarted)</td>
+                            <td class="d-none d-xl-table-cell"> @Html.DisplayFor(modelItem => item.Completed)</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

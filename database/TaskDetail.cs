@@ -26,8 +26,9 @@ namespace TaskOrganizer.database
         public bool Status { get; set; }
         public string Stage { get; set; }
         public int Priority { get; set; }
-    
-        public virtual TaskDetail TaskDetails1 { get; set; }
-        public virtual TaskDetail TaskDetail1 { get; set; }
+        public string Created_By { get; set; }
+        public string Modified_By { get; set; }
+        public Nullable<System.DateTime> Created_On { get; set; }
+        public Nullable<System.DateTime> Modified_On { get; set; }
     }
 }

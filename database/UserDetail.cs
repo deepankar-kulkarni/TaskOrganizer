@@ -22,16 +22,20 @@ namespace TaskOrganizer.database
     
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string LoginId { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
         public string Email { get; set; }
+        public string Department { get; set; }
         public string RecoveryQuestion { get; set; }
         public string RecoveryAns { get; set; }
         public string RecoveryEmail { get; set; }
         public string Mobile { get; set; }
+        public string Created_By { get; set; }
+        public string Modified_By { get; set; }
+        public Nullable<System.DateTime> Created_On { get; set; }
+        public Nullable<System.DateTime> Modified_On { get; set; }
     
-        public virtual UserDetail UserDetails1 { get; set; }
-        public virtual UserDetail UserDetail1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> UserRoles { get; set; }
     }

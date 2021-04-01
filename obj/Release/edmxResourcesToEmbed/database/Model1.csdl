@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ETOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CommentHistory">
+    <Key>
+      <PropertyRef Name="CommentId" />
+    </Key>
+    <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="TaskId" Type="Int32" Nullable="false" />
+    <Property Name="Commenter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+    <Property Name="Commented_On" Type="DateTime" Precision="7" />
+    <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Created_On" Type="DateTime" Precision="7" />
+    <Property Name="Modified_On" Type="DateTime" Precision="7" />
+  </EntityType>
+  <EntityType Name="CompanyDetail">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+    </Key>
+    <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CompanyName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Manager" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Created_On" Type="DateTime" Precision="7" />
+    <Property Name="Modified_On" Type="DateTime" Precision="7" />
+  </EntityType>
+  <EntityType Name="TaskDetail">
+    <Key>
+      <PropertyRef Name="TaskId" />
+    </Key>
+    <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="TaskName" Type="String" MaxLength="1050" FixedLength="false" Unicode="true" />
+    <Property Name="Assignee" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DueDate" Type="DateTime" Precision="7" />
+    <Property Name="TaskDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="CompletedDate" Type="DateTime" Precision="7" />
+    <Property Name="CompletedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TaskCreationDate" Type="DateTime" Precision="7" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <Property Name="Stage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Priority" Type="Int32" Nullable="false" />
+    <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Created_On" Type="DateTime" Precision="7" />
+    <Property Name="Modified_On" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="TaskDetails1" Relationship="Self.FK_User_Task" FromRole="TaskDetails" ToRole="TaskDetails1" />
+    <NavigationProperty Name="TaskDetail1" Relationship="Self.FK_User_Task" FromRole="TaskDetails1" ToRole="TaskDetails" />
+  </EntityType>
+  <EntityType Name="TaskHistory">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="TaskId" Type="Int32" Nullable="false" />
+    <Property Name="Action" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="7" />
+    <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Created_On" Type="DateTime" Precision="7" />
+    <Property Name="Modified_On" Type="DateTime" Precision="7" />
+  </EntityType>
+  <EntityType Name="UserDetail">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Department" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="RecoveryQuestion" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="RecoveryAns" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="RecoveryEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Modified_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Created_On" Type="DateTime" Precision="7" />
+    <Property Name="Modified_On" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_UserDetails" FromRole="UserDetails" ToRole="UserRole" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Created_By" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Modified_by" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Created_On" Type="DateTime" Precision="7" />
+    <Property Name="Modified_On" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="UserDetail" Relationship="Self.FK_UserRole_UserDetails" FromRole="UserRole" ToRole="UserDetails" />
+  </EntityType>
+  <Association Name="FK_User_Task">
+    <End Role="TaskDetails" Type="Self.TaskDetail" Multiplicity="1" />
+    <End Role="TaskDetails1" Type="Self.TaskDetail" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="TaskDetails">
+        <PropertyRef Name="TaskId" />
+      </Principal>
+      <Dependent Role="TaskDetails1">
+        <PropertyRef Name="TaskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserRole_UserDetails">
+    <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetails">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ETOEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CommentHistories" EntityType="Self.CommentHistory" />
+    <EntitySet Name="CompanyDetails" EntityType="Self.CompanyDetail" />
+    <EntitySet Name="TaskDetails" EntityType="Self.TaskDetail" />
+    <EntitySet Name="TaskHistories" EntityType="Self.TaskHistory" />
+    <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+    <AssociationSet Name="FK_User_Task" Association="Self.FK_User_Task">
+      <End Role="TaskDetails" EntitySet="TaskDetails" />
+      <End Role="TaskDetails1" EntitySet="TaskDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserRole_UserDetails" Association="Self.FK_UserRole_UserDetails">
+      <End Role="UserDetails" EntitySet="UserDetails" />
+      <End Role="UserRole" EntitySet="UserRoles" />
+    </AssociationSet>
+    <FunctionImport Name="sp_GetAllUsersDetails" ReturnType="Collection(ETOModel.sp_GetAllUsersDetails_Result)" />
+    <FunctionImport Name="sp_GetComment" ReturnType="Collection(ETOModel.sp_GetComment_Result)">
+      <Parameter Name="Taskid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetDashboardData" ReturnType="Collection(ETOModel.sp_GetDashboardData_Result)">
+      <Parameter Name="UserName" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetPendingTaskForUser" ReturnType="Collection(ETOModel.sp_GetPendingTaskForUser_Result)">
+      <Parameter Name="Username" Mode="In" Type="String" />
+      <Parameter Name="TodaysDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetSpecificTaskDetails" ReturnType="Collection(ETOModel.sp_GetSpecificTaskDetails_Result)">
+      <Parameter Name="Taskid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetTaskHstory" ReturnType="Collection(String)">
+      <Parameter Name="Taskid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetUserwiseTaskDetails" ReturnType="Collection(ETOModel.sp_GetUserwiseTaskDetails_Result)">
+      <Parameter Name="Username" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="StagewiseDataForDashboard" ReturnType="Collection(ETOModel.StagewiseDataForDashboard_Result)">
+      <Parameter Name="p1" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetFilteredData" ReturnType="Collection(ETOModel.sp_GetFilteredData_Result1)">
+      <Parameter Name="username" Mode="In" Type="String" />
+      <Parameter Name="stage" Mode="In" Type="String" />
+      <Parameter Name="priority" Mode="In" Type="Int32" />
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetFilteredData_new">
+      <Parameter Name="username" Mode="In" Type="String" />
+      <Parameter Name="stage" Mode="In" Type="String" />
+      <Parameter Name="priority" Mode="In" Type="Int32" />
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="sp_GetAllUsersDetails_Result">
+    <Property Type="Int32" Name="Userid" Nullable="false" />
+    <Property Type="String" Name="UserName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Department" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="sp_GetComment_Result">
+    <Property Type="String" Name="Comment" Nullable="true" MaxLength="1500" />
+    <Property Type="String" Name="Commenter" Nullable="true" MaxLength="150" />
+    <Property Type="DateTime" Name="Commented_On" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_GetDashboardData_Result">
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="Pending" Nullable="true" />
+    <Property Type="Int32" Name="OnHold" Nullable="true" />
+    <Property Type="Int32" Name="InProgress" Nullable="true" />
+    <Property Type="Int32" Name="Completed" Nullable="true" />
+    <Property Type="Int32" Name="NotStarted" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_GetPendingTaskForUser_Result">
+    <Property Type="Int32" Name="TaskId" Nullable="false" />
+    <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+    <Property Type="String" Name="stage" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_GetSpecificTaskDetails_Result">
+    <Property Type="Int32" Name="TaskId" Nullable="false" />
+    <Property Type="Int32" Name="UserId" Nullable="true" />
+    <Property Type="String" Name="TaskDescription" Nullable="true" MaxLength="1050" />
+    <Property Type="DateTime" Name="DueDate" Nullable="true" />
+    <Property Type="String" Name="CompletedDate" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="CompletedBy" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="Status" Nullable="true" />
+    <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="Priority" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sp_GetUserwiseTaskDetails_Result">
+    <Property Type="Int32" Name="TaskId" Nullable="false" />
+    <Property Type="String" Name="TaskName" Nullable="true" MaxLength="1050" />
+    <Property Type="String" Name="TaskDescription" Nullable="true" MaxLength="2000" />
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="DateTime" Name="DueDate" Nullable="true" />
+    <Property Type="String" Name="CompletedBy" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="CompletedDate" Nullable="true" />
+    <Property Type="Boolean" Name="Status" Nullable="false" />
+    <Property Type="Int32" Name="Priority" Nullable="false" />
+    <Property Type="String" Name="Stage" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="TaskCreationDate" Nullable="true" />
+    <Property Type="Int32" Name="UserId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="StagewiseDataForDashboard_Result">
+    <Property Type="String" Name="Assignee" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="Pending" Nullable="true" />
+    <Property Type="Int32" Name="OnHold" Nullable="true" />
+    <Property Type="Int32" Name="InProgress" Nullable="true" />
+    <Property Type="Int32" Name="Completed" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_GetFilteredData_Result1">
+    <Property Type="Int32" Name="TaskId" Nullable="true" />
+    <Property Type="String" Name="Assignee" Nullable="true" />
+    <Property Type="String" Name="TaskName" Nullable="true" />
+    <Property Type="String" Name="Stage" Nullable="true" />
+    <Property Type="DateTime" Name="DueDate" Nullable="true" />
+    <Property Type="Boolean" Name="Status" Nullable="true" />
+  </ComplexType>
+</Schema>
