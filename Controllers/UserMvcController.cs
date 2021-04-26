@@ -20,6 +20,7 @@ namespace TaskOrganizer.Controllers
     {
         //get userwise tasks
         List<Task> tasks = new List<Task>();
+        [Authorize]
         public ActionResult GetUserWiseTask(string username)
         {
             using (ETOEntities eto = new ETOEntities())
@@ -40,12 +41,13 @@ namespace TaskOrganizer.Controllers
         }
 
         //get all tasks 
+        [Authorize]
         public ActionResult GetAllTasks()
         {
             ViewBag.AssigneeList = getAllUsers();
             return View();
         }
-
+        [Authorize]
         public ActionResult CreateTask()
         {
             ViewBag.AssigneeList = getAllUsers();
@@ -91,8 +93,9 @@ namespace TaskOrganizer.Controllers
             }
            
         }
-       
+
         //total count of tasks of all user
+        [Authorize]
         public ActionResult AdminDashboard()
         {
             List<Dashboard> tasks = new List<Dashboard>();
@@ -118,6 +121,7 @@ namespace TaskOrganizer.Controllers
         }
 
         //total count of tasks of per user
+        [Authorize]
         public ActionResult UserDashboard(string username)
         {
             List<Dashboard> tasks = new List<Dashboard>();
@@ -140,8 +144,9 @@ namespace TaskOrganizer.Controllers
             }
             return View(tasks);
         }
-       
+
         //Get edit details of specific task
+        [Authorize]
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -305,6 +310,7 @@ namespace TaskOrganizer.Controllers
         }
 
         //delete task
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             using (ETOEntities eto = new ETOEntities())
@@ -355,7 +361,7 @@ namespace TaskOrganizer.Controllers
 
 
         //populate pending tasks for specific user
-
+        [Authorize]
         public ActionResult PendingTasksPerUser()
         {
             using (ETOEntities eto = new ETOEntities())
@@ -379,7 +385,7 @@ namespace TaskOrganizer.Controllers
 
         //public JsonResult GetFilteredData(string username,string stage,int priority,DateTime fromDate, DateTime toDate)
         //{
-           
+
         //    using (ETOEntities eto = new ETOEntities())
         //    {
         //        if (username == "All")
@@ -392,12 +398,13 @@ namespace TaskOrganizer.Controllers
         //            var result = eto.sp_GetFilteredData(username, stage, priority, fromDate, toDate).ToList();
         //            return Json(new { result });
         //        }
-               
-               
+
+
         //    }
         //}
 
         //create user
+        [Authorize]
         public ActionResult CreateUser()
         {
             ViewBag.DepartmentList = getAllDepartments();
@@ -444,6 +451,7 @@ namespace TaskOrganizer.Controllers
             }
 
         }
+        [Authorize]
         public ActionResult CreateDepartment()
         {
             ViewBag.AssigneeList = getAllUsers();
@@ -489,6 +497,7 @@ namespace TaskOrganizer.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult UserProfile()
         {
             return View();
